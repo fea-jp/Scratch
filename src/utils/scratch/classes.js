@@ -21,4 +21,21 @@ class User{
     }
 }
 
-export {User}
+class Project{
+    constructor(id){
+        this.id=id;
+    }
+    async init(){
+        const res=await fetch(`https://api.scratch.mit.edu/projects/${this.id}`);
+        const data=await res.json();
+        this.project_token=data.project_token;
+        return data;
+    }
+    async getJSON(){
+        const res=await fetch(`https://projects.scratch.mit.edu/${this.id}?token=${this.project_token}`);
+        const data=await res.json();
+        return data;
+    }
+}
+
+export {User,Project}

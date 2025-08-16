@@ -8,4 +8,4 @@ const app=express();
 app.use("/api",api);
 
 const PORT=process.env.PORT||8080;
-app.listen(PORT,PORT=>{console.log(`Server is running on PORT ${PORT}`)});
+const listener=app.listen(PORT,PORT=>{console.log(`Server is running on PORT ${PORT}`)});
