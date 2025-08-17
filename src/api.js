@@ -7,16 +7,30 @@ router.get("/ping",(req,res)=>{
     res.send("pong!")
 });
 
-router.get("/users/:username/ua",async(req,res)=>{
+router.get("/users/:username",async(req,res)=>{
     const {username}=req.params;
     const user=new User(username);
-    await user.init();
-    const projects=await user.getProjects(1);
-    console.log(projects);
-    const project=new Project(projects[0].id);
-    await project.init();
-    const json=await project.getJSON();
-    res.send(json.meta);
+    try{
+        res.send(await user.init());
+    }catch(e){
+        console.error(e.message);
+        res.status(404).send(e);
+    }
+});
+
+router.get("/users/:username/ua",async(req,res)=>{
+    try{
+        const {username}=req.params;
+        const user=new User(username);
+        await user.init();
+        const projects=await user.getProjects(1);
+        const project=new Project(projects[0].id);
+        await project.init();
+        const json=await project.getJSON();
+        res.send(json.meta);
+    }catch(e){
+        res.status(404).send(e);
+    }
 });
 
 router.get("/users/:username/projects",async (req,res)=>{
